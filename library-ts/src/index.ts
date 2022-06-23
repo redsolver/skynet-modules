@@ -1,9 +1,9 @@
 import * as kernel from "libkernel"
 
 
-import { DirectoryFile, DirectoryIndex, FileData, Post, PostContent, Profile } from "./skystandards";
+import { DirectoryFile, DirectoryIndex, FileData, Post, PostContent, Profile } from "./skystandards.js";
 
-export * from "./skystandards";
+export * from "./skystandards.js";
 
 const MODULE_SKYLINK_IdentityDAC = 'AQBmFdF14nfEQrERIknEBvZoTXxyxG8nejSjH6ebCqcFkQ';
 
