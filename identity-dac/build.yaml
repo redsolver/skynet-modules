@@ -1,0 +1,15 @@
+targets:
+  $default:
+    builders:
+      # This part configures dart_json_mapper builder
+      dart_json_mapper:
+        options:
+          iterables: List, Set, HashSet, UnmodifiableListView, Map
+        generate_for:
+          - no/files
+
+      # This part is needed to tell original reflectable builder to stay away
+      # it overrides default options for reflectable builder to an **empty** set of files
+      reflectable:
+        generate_for:
+          - no/files
