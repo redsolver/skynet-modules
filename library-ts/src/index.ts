@@ -29,7 +29,7 @@ export class ProfileDAC {
   public constructor() { }
   /// getProfile
   public async getProfile(
-    userId: string | null,
+    userId?: string,
   ): Promise<Profile | null> {
 
     let [data, err] = await kernel.callModule(MODULE_SKYLINK_ProfileDAC, 'getProfile', {
@@ -222,6 +222,17 @@ export class SocialDAC {
     if (err !== null) throw err;
     return data as any;
   }
+  /// onFollowingChange
+  public async onFollowingChange(
+    onData: (data?: any) => void,
+  ): Promise<void> {
+
+    let [sendUpdate, query] = kernel.connectModule(MODULE_SKYLINK_SocialDAC, 'onFollowingChange', {
+    }, onData);
+    let [data, err] = await query;
+    if (err !== null) throw err;
+    return data as any;
+  }
 }
 const MODULE_SKYLINK_FeedDAC = 'AQCSRGL0vey8Nccy_Pqk3fYTMm0y2nE_dK0I8ro8bZyZ3Q';
 
@@ -241,8 +252,8 @@ export class FeedDAC {
   /// loadPostsForUser
   public async loadPostsForUser(
     userId: string,
-    feedId: string,
-    beforeTimestamp: number | null,
+    feedId?: string,
+    beforeTimestamp?: number,
   ): Promise<Post[]> {
 
     let [data, err] = await kernel.callModule(MODULE_SKYLINK_FeedDAC, 'loadPostsForUser', {
@@ -253,13 +264,56 @@ export class FeedDAC {
     if (err !== null) throw err;
     return data as any;
   }
+  /// loadCommentsForPost
+  public async loadCommentsForPost(
+    ref: string,
+    onData: (data?: any) => void,
+  ): Promise<void> {
+
+    let [sendUpdate, query] = kernel.connectModule(MODULE_SKYLINK_FeedDAC, 'loadCommentsForPost', {
+      'ref': ref,
+    }, onData);
+    let [data, err] = await query;
+    if (err !== null) throw err;
+    return data as any;
+  }
+  /// getCommentsCount
+  public async getCommentsCount(
+    ref: string,
+    onData: (data?: any) => void,
+  ): Promise<void> {
+
+    let [sendUpdate, query] = kernel.connectModule(MODULE_SKYLINK_FeedDAC, 'getCommentsCount', {
+      'ref': ref,
+    }, onData);
+    let [data, err] = await query;
+    if (err !== null) throw err;
+    return data as any;
+  }
+  /// listenForPosts
+  public async listenForPosts(
+    userId: string,
+    feedId: string,
+    onData: (data?: any) => void,
+  ): Promise<void> {
+
+    let [sendUpdate, query] = kernel.connectModule(MODULE_SKYLINK_FeedDAC, 'listenForPosts', {
+      'userId': userId,
+      'feedId': feedId,
+    }, onData);
+    let [data, err] = await query;
+    if (err !== null) throw err;
+    return data as any;
+  }
   /// createPost
   public async createPost(
     content: PostContent,
+    feedId?: string,
   ): Promise<string> {
 
     let [data, err] = await kernel.callModule(MODULE_SKYLINK_FeedDAC, 'createPost', {
       'content': content,
+      'feedId': feedId,
     });
     if (err !== null) throw err;
     return data as any;
@@ -333,8 +387,8 @@ export class BridgeDAC {
   /// loadPostsForUser
   public async loadPostsForUser(
     userId: string,
-    feedId: string,
-    beforeTimestamp: number | null,
+    feedId?: string,
+    beforeTimestamp?: number,
   ): Promise<Post[]> {
 
     let [data, err] = await kernel.callModule(MODULE_SKYLINK_BridgeDAC, 'loadPostsForUser', {
